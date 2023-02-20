@@ -15,18 +15,18 @@ public class GrpcServer {
     @Value("${grpc.server.port:9090}")
     private int port;
     private Server server;
-    private PersonService personService;
+    private AssetService assetService;
     private ExceptionInterceptor exceptionInterceptor;
 
-    public GrpcServer(PersonService personService, ExceptionInterceptor exceptionInterceptor) {
-        this.personService = personService;
+    public GrpcServer(AssetService assetService, ExceptionInterceptor exceptionInterceptor) {
+        this.assetService = assetService;
         this.exceptionInterceptor = exceptionInterceptor;
     }
 
     public void start() throws IOException, InterruptedException {
         log.info("gRPC server is starting on port: {}.", port);
         server = ServerBuilder.forPort(port)
-            .addService(personService)
+            .addService(assetService)
             .intercept(exceptionInterceptor)
             .build().start();
         log.info("gRPC server started and listening on port: {}.", port);
